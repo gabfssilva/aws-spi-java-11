@@ -25,6 +25,10 @@ dependencies {
         exclude group: 'software.amazon.awssdk', module: 'netty-nio-client'
     }
 
+    testImplementation (group: 'software.amazon.awssdk', name: 'sns', version: awsSdkVersion) {
+        exclude group: 'software.amazon.awssdk', module: 'netty-nio-client'
+    }
+
     testImplementation (group: 'software.amazon.awssdk', name: 's3', version: awsSdkVersion) {
         exclude group: 'software.amazon.awssdk', module: 'netty-nio-client'
     }
