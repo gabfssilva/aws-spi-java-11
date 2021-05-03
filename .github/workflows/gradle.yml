@@ -24,4 +24,9 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew build -i
+      run: ./gradlew clean build -i
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1.14
+      if: always()
+      with:
+        files: build/test-results/**/*.xml
