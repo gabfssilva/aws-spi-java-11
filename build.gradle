@@ -1,0 +1,42 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    jcenter()
+}
+
+def awsSdkVersion = '2.16.52'
+def junitVersion = '5.7.1'
+
+dependencies {
+    implementation "io.reactivex.rxjava3:rxjava:3.0.12"
+    implementation group: 'software.amazon.awssdk', name: 'http-client-spi', version: awsSdkVersion
+
+    testImplementation group: 'org.junit.jupiter', 'name': 'junit-jupiter-api', version: junitVersion
+    testImplementation group: 'org.junit.jupiter', 'name': 'junit-jupiter-params', version: junitVersion
+
+    testImplementation (group: 'software.amazon.awssdk', name: 'sqs', version: awsSdkVersion) {
+        exclude group: 'software.amazon.awssdk', module: 'netty-nio-client'
+    }
+
+    testImplementation (group: 'software.amazon.awssdk', name: 's3', version: awsSdkVersion) {
+        exclude group: 'software.amazon.awssdk', module: 'netty-nio-client'
+    }
+
+    testImplementation "org.testcontainers:testcontainers:1.15.3"
+    testImplementation "org.testcontainers:localstack:1.15.3"
+    testImplementation "org.testcontainers:junit-jupiter:1.15.3"
+    testImplementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+
+    //Just to make localstack happy.
+    //Sadly this seems to be the largest dependency in this project.
+    //But, well... Just for testing, so... ¯\_(ツ)_/¯
+    testRuntimeOnly group: 'com.amazonaws', name: 'aws-java-sdk-core', version: '1.11.1009'
+}
+
+test {
+    useJUnitPlatform()
+}
