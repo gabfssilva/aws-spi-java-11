@@ -13,6 +13,13 @@ final var client = AsyncHttpClient.buildDefault();
 final var sqsClient = SqsAsyncClient.builder().httpClient(client).build();
 ```
 
+# Tested against
+
+- SQS
+- SNS
+- S3
+- DynamoDB
+
 # How to contribute?
 
 todo
