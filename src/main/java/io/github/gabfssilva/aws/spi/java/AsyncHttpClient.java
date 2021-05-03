@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Flow.Publisher;
 
 public class AsyncHttpClient implements SdkAsyncHttpClient {
     private static final Set<String> headersToSkip = Set.of("Host", "Content-Length", "Expect");
@@ -61,7 +62,7 @@ public class AsyncHttpClient implements SdkAsyncHttpClient {
         return builder().build();
     }
 
-    private SdkHttpFullResponse extractHeaders(HttpResponse<java.util.concurrent.Flow.Publisher<java.util.List<ByteBuffer>>> response) {
+    private SdkHttpFullResponse extractHeaders(HttpResponse<Publisher<List<ByteBuffer>>> response) {
         return SdkHttpResponse
                 .builder()
                 .headers(response.headers().map())
@@ -69,8 +70,12 @@ public class AsyncHttpClient implements SdkAsyncHttpClient {
                 .build();
     }
 
-    private Flowable<ByteBuffer> extractResponse(HttpResponse<java.util.concurrent.Flow.Publisher<java.util.List<ByteBuffer>>> response) {
-        return Flowable.fromPublisher(FlowAdapters.toPublisher(response.body())).flatMapIterable(x -> x);
+    private Flowable<ByteBuffer> extractResponse(HttpResponse<Publisher<List<ByteBuffer>>> response) {
+        final var publisher = FlowAdapters.toPublisher(response.body());
+
+        return Flowable
+                .fromPublisher(publisher)
+                .flatMapIterable(this::identity);
     }
 
     private HttpRequest.BodyPublisher extractBody(AsyncExecuteRequest request) {
@@ -114,5 +119,9 @@ public class AsyncHttpClient implements SdkAsyncHttpClient {
 
     private boolean shouldSkipHeader(String key) {
         return headersToSkip.contains(key);
+    }
+
+    private <T> T identity(T t) {
+        return t;
     }
 }
