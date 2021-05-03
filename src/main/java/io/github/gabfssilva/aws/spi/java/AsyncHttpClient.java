@@ -101,12 +101,15 @@ public class AsyncHttpClient implements SdkAsyncHttpClient {
 
     private HttpRequest extractRequest(AsyncExecuteRequest request) {
         final var req = request.request();
+
         HttpRequest.Builder builder = HttpRequest.newBuilder(req.getUri());
         req.headers().forEach((key, values) -> {
             if (!shouldSkipHeader(key)) values.forEach(value -> builder.header(key, value));
         });
-        builder.expectContinue(expectContinue(request));
-        return builder.method(req.method().name(), extractBody(request)).build();
+
+        return builder
+                .expectContinue(expectContinue(request))
+                .method(req.method().name(), extractBody(request)).build();
     }
 
     private boolean shouldSkipHeader(String key) {

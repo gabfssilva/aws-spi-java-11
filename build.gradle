@@ -33,6 +33,10 @@ dependencies {
         exclude group: 'software.amazon.awssdk', module: 'netty-nio-client'
     }
 
+    testImplementation (group: 'software.amazon.awssdk', name: 'dynamodb', version: awsSdkVersion) {
+        exclude group: 'software.amazon.awssdk', module: 'netty-nio-client'
+    }
+
     testImplementation "org.testcontainers:testcontainers:1.15.3"
     testImplementation "org.testcontainers:localstack:1.15.3"
     testImplementation "org.testcontainers:junit-jupiter:1.15.3"
