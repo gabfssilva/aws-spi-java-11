@@ -17,12 +17,12 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Flow.Publisher;
 
-public class AsyncHttpClient implements SdkAsyncHttpClient {
+public final class AsyncHttpClient implements SdkAsyncHttpClient {
     private static final Set<String> headersToSkip = Set.of("Host", "Content-Length", "Expect");
 
     private final HttpClient httpClient;
 
-    public AsyncHttpClient(HttpClient httpClient) {
+    protected AsyncHttpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
     }
 

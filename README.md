@@ -22,7 +22,9 @@ final var sqsClient = SqsAsyncClient.builder().httpClient(client).build();
 
 # How to contribute?
 
-todo
+PRs are always welcome. The library is pretty simple itself, but we could use having more tests with other SDK modules.
+
+Also, we need more people using it, once I get enough feedback, I'll start publishing stable releases.
 
 # How is it tested?
 
@@ -30,4 +32,4 @@ todo a better description, but basically with Localstack.
 
 # License
 
-todo
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details

@@ -1,5 +1,6 @@
 package io.github.gabfssilva.aws.spi.java;
 
+import io.github.gabfssilva.aws.spi.java.utils.LocalStackService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,6 +21,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @DisplayName("A test specification to assure that SQS client is working fine with this library")
+@LocalStackService(LocalStackContainer.Service.SQS)
 class SQSServiceSpec extends AwsServiceSpec<SqsAsyncClient, SqsAsyncClientBuilder> {
 
     @ParameterizedTest(name = "Asserting that I am able to create queues")
@@ -63,11 +65,6 @@ class SQSServiceSpec extends AwsServiceSpec<SqsAsyncClient, SqsAsyncClientBuilde
     private static Stream<String> randomQueueName() {
         final var randomQueueName = "queue-" + UUID.randomUUID().toString().replace("-", "").substring(0, 10);
         return Stream.of(randomQueueName);
-    }
-
-    @Override
-    public LocalStackContainer.Service enabledService() {
-        return LocalStackContainer.Service.SQS;
     }
 
     @Override

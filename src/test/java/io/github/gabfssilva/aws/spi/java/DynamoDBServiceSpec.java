@@ -1,5 +1,6 @@
 package io.github.gabfssilva.aws.spi.java;
 
+import io.github.gabfssilva.aws.spi.java.utils.LocalStackService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -16,6 +17,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @DisplayName("A test specification to assure that DynamoDB client is working fine with this library")
+@LocalStackService(LocalStackContainer.Service.DYNAMODB)
 class DynamoDBServiceSpec extends AwsServiceSpec<DynamoDbAsyncClient, DynamoDbAsyncClientBuilder> {
 
     @ParameterizedTest(name = "Asserting that I am able to create tables")

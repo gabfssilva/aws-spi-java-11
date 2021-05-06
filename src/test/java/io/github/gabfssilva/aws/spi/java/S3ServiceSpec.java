@@ -3,6 +3,7 @@ package io.github.gabfssilva.aws.spi.java;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.gabfssilva.aws.spi.java.utils.FileUtils;
 import io.github.gabfssilva.aws.spi.java.utils.ListUtils;
+import io.github.gabfssilva.aws.spi.java.utils.LocalStackService;
 import io.reactivex.rxjava3.core.Flowable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -31,6 +32,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @DisplayName("A test specification to assure that S3 client is working fine with this library")
+@LocalStackService(LocalStackContainer.Service.S3)
 class S3ServiceSpec extends AwsServiceSpec<S3AsyncClient, S3AsyncClientBuilder> {
 
     @ParameterizedTest(name = "Asserting that I am able to create buckets")
@@ -167,14 +169,10 @@ class S3ServiceSpec extends AwsServiceSpec<S3AsyncClient, S3AsyncClientBuilder> 
 
         fileStream
                 .buffer(10000)
-                .forEach(chunk -> Files.write(path, chunk, StandardOpenOption.APPEND));
+                .forEach(chunk -> Files.write(path, chunk, StandardOpenOption.APPEND))
+                .dispose();
 
         return FileUtils.splitFile(path.toFile(), 6);
-    }
-
-    @Override
-    public LocalStackContainer.Service enabledService() {
-        return LocalStackContainer.Service.S3;
     }
 
     @Override

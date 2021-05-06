@@ -1,5 +1,6 @@
 package io.github.gabfssilva.aws.spi.java;
 
+import io.github.gabfssilva.aws.spi.java.utils.LocalStackService;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,6 @@ public abstract class AwsServiceSpec<C extends SdkClient, B extends AwsAsyncClie
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
     protected LocalStackContainer container = LocalStackInstance.container();
 
-    protected abstract LocalStackContainer.Service enabledService();
     protected abstract B builder();
 
     protected C client() {
@@ -51,5 +51,10 @@ public abstract class AwsServiceSpec<C extends SdkClient, B extends AwsAsyncClie
 
     private StaticCredentialsProvider basicCredentials() {
         return StaticCredentialsProvider.create(AwsBasicCredentials.create("x", "x"));
+    }
+
+    protected LocalStackContainer.Service enabledService() {
+        final var stackService = this.getClass().getDeclaredAnnotation(LocalStackService.class);
+        return stackService.value();
     }
 }
