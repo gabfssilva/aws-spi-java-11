@@ -13,6 +13,37 @@ repositories {
     mavenLocal()
 }
 
+publishing {
+    repositories {
+        maven {
+            credentials {
+                username = System.env.MVN_USERNAME
+                password = System.env.MVN_PASSWORD
+            }
+
+            def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            def releasesRepoUrl = "https://s01.oss.sonatype.org/content/repositories/releases/"
+
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+        }
+    }
+
+    publications {
+        maven(MavenPublication) {
+            groupId = 'io.github.gabfssilva'
+            artifactId = 'aws-spi-java-11'
+            version = "0.0.1-SNAPSHOT"
+            from components.java
+
+            pom {
+                name = 'aws-spi-java-11'
+                description = 'A module using the HTTP api from Java 11 for AWS SDK 2.0'
+            }
+        }
+    }
+}
+
+
 def awsSdkVersion = '2.16.52'
 def junitVersion = '5.7.1'
 
